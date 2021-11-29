@@ -4,7 +4,7 @@ resource "aws_lambda_function" "lambda" {
   ]
   function_name = "img_upload_to_s3"
   role          = aws_iam_role.lambda_role.arn
-  handler       = "lambda.lambda_handler"
+  handler       = "upload_img_to_s3.handler"
   runtime       = "python3.9"
 
   filename         = data.archive_file.lambda_payload.output_path
@@ -60,6 +60,14 @@ resource "aws_iam_policy" "lambda_policy" {
             "Effect": "Allow",
             "Action": [
                 "s3:*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "AllowCloudWatchLogging",
+            "Effect": "Allow",
+            "Action": [
+                "logs:*"
             ],
             "Resource": "*"
         }
